@@ -5,7 +5,7 @@ communication between nodes, sometimes a little more structure is helpful.
 
 If you think of Digilines as roughly between the level of Ethernet and
 TCP, Diginet is an application-level protocol more like HTTP, though
-it has to introduce a notion of addressing as this is absent from Digilines.
+it has to introduce a notion of addressing too.
 
 ## Addressing
 
@@ -39,7 +39,7 @@ Though of course you can include whatever fields you like.
 
 ## Ping
 
-All Diginet-aware nodes should reply to ping packets:
+TODO: All Diginet-aware nodes should reply to ping packets:
 
     {source="(12,-5,23)", destination="(*,*,*)", method="ping"}
 
@@ -56,6 +56,8 @@ calculate the methods with which to respond.
 ## Error handlers
 
 Needs a callback for what happens if the source does not exist.
+
+TODO: describe in more detail
 
 ## API
 
@@ -81,3 +83,17 @@ There is also a `diginet.reply` function which is simply a convenience
 wrapper around `diginet.send` which takes an original packet and a
 response packet, and sets the `source`, `destination`, `player`, and
 `in_reply_to` fields on the response, and sends it.
+
+## License
+
+Copyright © 2015 Phil Hagelberg and contributors.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License (in the file COPYING) for more details.
