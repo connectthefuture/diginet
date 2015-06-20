@@ -77,7 +77,9 @@ field in your call to `minetest.register_node`:
                                             }}
 
 All handler functions will receive a `pos` argument for the node in
-question as well as a `packet` argument with the packet table.
+question as well as a `packet` argument with the packet table. If the
+method specified is not found in the handlers table and an `_unknown`
+function is present, it will be called instead.
 
 There is also a `diginet.reply` function which is simply a convenience
 wrapper around `diginet.send` which takes an original packet and a

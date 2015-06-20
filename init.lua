@@ -49,7 +49,7 @@ diginet = {
       for _,dest_node in pairs(nodes_for(packet.destination)) do
          local spec = getspec(dest_node)
          if(dest_node and spec) then
-            local handler = spec[packet.method]
+            local handler = spec[packet.method] or spec["_unknown"]
             if(handler) then
                handler(packet.destination, packet)
             else
@@ -83,3 +83,5 @@ diginet = {
       end
    end
 }
+
+dofile(minetest.get_modpath("diginet").."/nodes.lua")
