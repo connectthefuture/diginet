@@ -32,7 +32,7 @@ local reply_to = function(original, new)
 end
 
 local reply_err = function(original, spec, message)
-   if(not spec.error) then return end
+   if(not spec or not spec.error) then return end
    spec.error(original.source, reply_to(packet, {err = message}))
 end
 
