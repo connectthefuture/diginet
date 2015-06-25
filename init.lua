@@ -18,7 +18,7 @@ local normalize = function(packet)
    return packet
 end
 
-local getspec = function(node)
+local get_spec = function(node)
    return minetest.registered_nodes[node.name] and
       minetest.registered_nodes[node.name].diginet
 end
@@ -32,13 +32,14 @@ local reply_to = function(original, new)
 end
 
 local reply_err = function(original, spec, message)
+   print("Diginet error: " .. message)
    if(not spec or not spec.error) then return end
    spec.error(original.source, reply_to(packet, {err = message}))
 end
 
 local nodes_for = function(address)
    local dest_node = minetest.get_node(address)
-   return {dest_node} -- TODO: multicast
+   return {[address] = dest_node}      -- TODO: multicast
 end
 
 diginet = {
@@ -46,18 +47,18 @@ diginet = {
    send = function(packet)
       normalize(packet)
       print("Sending " .. minetest.serialize(packet))
-      for _,dest_node in pairs(nodes_for(packet.destination)) do
-         local spec = getspec(dest_node)
-         if(dest_node and spec) then
+      for pos,dest_node in pairs(nodes_for(packet.destination)) do
+         local spec = get_spec(dest_node)
+         if(spec) then
             local handler = spec[packet.method] or spec["_unknown"]
             if(handler) then
-               handler(packet.destination, packet)
+               handler(pos, packet)
             else
                reply_err(packet, spec, "No method " .. packet.method)
             end
          else
-            reply_err(packet, spec, "Undeliverable to " ..
-                         minetest.pos_to_string(packet.destination))
+            reply_err(packet, spec, "Undeliverable to " .. dest_node.name ..
+                         " at " .. minetest.pos_to_string(pos))
          end
       end
    end,
