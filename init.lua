@@ -85,4 +85,4 @@ diginet = {
    end
 }
 
-dofile(minetest.get_modpath("diginet").."/nodes.lua")
+dofile(minetest.get_modpath("diginet").."/dns.lua")
