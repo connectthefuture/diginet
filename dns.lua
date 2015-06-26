@@ -1,6 +1,6 @@
 -- DNS server
 
-local hostnames = {}
+diginet.hostnames = {}
 
 local formspec = function(entries)
    -- TODO: support arbitrary number of entries
@@ -33,20 +33,20 @@ local on_receive_fields = function(pos, _formname, fields, player)
                      alias4 = "pos4"}) do
       if(fields[v] and not fields[v]:match("^$")) then
          print("DNS: setting " .. fields[k] .. " to " .. fields[v])
-         hostnames[fields[k]] = fields[v]
+         diginet.hostnames[fields[k]] = fields[v]
       end
    end
 end
 
 local set_hostname = function(pos, packet)
-   hostnames[packet.alias] = packet.position
+   diginet.hostnames[packet.alias] = packet.position
 end
 
 local hostnames_path = minetest.get_worldpath() .. "/diginet_hostnames"
 
 local save_hostnames = function()
    local file = io.open(hostnames_path, "w")
-   file:write(minetest.serialize(hostnames))
+   file:write(minetest.serialize(diginet.hostnames))
    file:close()
 end
 
@@ -57,7 +57,7 @@ local load_hostnames = function()
    if file then file:close() end
    if(file and contents ~= "") then
       for k,v in pairs(minetest.deserialize(contents)) do
-         hostnames[k] = v
+         diginet.hostnames[k] = v
       end
    else
       return {}

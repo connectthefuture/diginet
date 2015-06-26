@@ -4,7 +4,7 @@ local normalize_address = function(address)
    if(type(address) == "table") then
       return address
    elseif(type(address) == "string") then
-      return minetest.string_to_pos(address)
+      return minetest.string_to_pos(diginet.hostnames[address] or address)
    else
       error("Unknown address type: " .. type(address))
    end
