@@ -38,6 +38,7 @@ local reply_err = function(original, spec, message)
 end
 
 local nodes_for = function(address)
+   if(not address) then return {} end
    local dest_node = minetest.get_node(address)
    return {[address] = dest_node}      -- TODO: multicast
 end
