@@ -70,12 +70,12 @@ minetest.register_node("diginet:dns", {
                           paramtype2 = "facedir",
                           walkable = true,
                           tiles = {
-                             "terminal_top.png",
-                             "digicode_side.png",
-                             "digicode_side.png",
-                             "digicode_side.png",
-                             "digicode_side.png",
-                             "terminal_front.png"
+                             "diginet_dns_side.png",
+                             "diginet_dns_side.png",
+                             "diginet_dns_side.png",
+                             "diginet_dns_side.png",
+                             "diginet_dns_side.png",
+                             "diginet_dns_front.png"
                           },
                           diginet = { set_hostname = set_hostname,},
                           groups = { dig_immediate = 2 },
