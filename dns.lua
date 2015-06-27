@@ -3,32 +3,28 @@
 diginet.hostnames = {}
 
 local formspec = function(entries)
-   -- TODO: support arbitrary number of entries
-   local fields = "field[0.5,1.5;3,1;alias1;alias;myhost]" ..
-      "field[4,1.5;3,1;pos1;position;(0,3,75)]" ..
-      "field[0.5,2.5;3,1;alias2;alias;]" ..
-      "field[4,2.5;3,1;pos2;position;]" ..
-      "field[0.5,3.5;3,1;alias3;alias;]" ..
-      "field[4,3.5;3,1;pos3;position;]" ..
-      "field[0.5,4.5;3,1;alias4;alias;]" ..
-      "field[4,4.5;3,1;pos4;position;]"
-   return "size[8,10]" ..
-      fields ..
-      "button[0.5,9.5;3,1;save;save]"
+   return "size[8,6.5]" ..
+      "field[0.5,1.5;3,1;alias1;alias;" .. (entries.alias1 or "") .."]"..
+      "field[4,1.5;3,1;pos1;position;" .. (entries.pos1 or "") .."]"..
+      "field[0.5,2.5;3,1;alias2;alias;" .. (entries.alias2 or "")  .."]"..
+      "field[4,2.5;3,1;pos2;position;" .. (entries.pos2 or "")  .."]"..
+      "field[0.5,3.5;3,1;alias3;alias;" .. (entries.alias3 or "")  .."]"..
+      "field[4,3.5;3,1;pos3;position;" .. (entries.pos3 or "")  .."]"..
+      "field[0.5,4.5;3,1;alias4;alias;" .. (entries.alias4 or "")  .."]"..
+      "field[4,4.5;3,1;pos4;position;" .. (entries.pos4 or "")  .."]" ..
+      "button[0.5,5.5;3,1;save;save]"
 end
 
 local on_construct = function(pos)
    local meta = minetest.get_meta(pos)
-   meta:set_string("formspec", formspec())
+   meta:set_string("formspec", formspec({}))
 end
 
 local on_receive_fields = function(pos, _formname, fields, player)
-   print("received")
-   print(minetest.serialize(fields))
+   if(fields.quit) then return end
    local meta = minetest.get_meta(pos)
-   meta:set_string("formspec", formspec())
+   meta:set_string("formspec", formspec(fields))
 
-   -- TODO: support arbitrary entries
    for k,v in pairs({alias1 = "pos1", alias2 = "pos2", alias3 = "pos3",
                      alias4 = "pos4"}) do
       if(fields[v] and not fields[v]:match("^$")) then
