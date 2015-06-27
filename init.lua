@@ -33,8 +33,11 @@ end
 
 local reply_err = function(original, spec, message)
    print("Diginet error: " .. message)
-   if(not spec or not spec.error) then return end
-   spec.error(original.source, reply_to(packet, {err = message}))
+   if(not spec or not spec.error) then
+      print(message)
+   else
+      spec.error(original.source, reply_to(packet, {err = message}))
+   end
 end
 
 local nodes_for = function(address)
@@ -46,14 +49,17 @@ end
 diginet = {
    -- Send a packet over diginet. Required fields: source, destination, method.
    send = function(packet)
+      local orig_source = packet.source
       normalize(packet)
+      assert(packet.source, "Host not found.")
       print("Sending " .. minetest.serialize(packet))
       for pos,dest_node in pairs(nodes_for(packet.destination)) do
          local spec = get_spec(dest_node)
          if(spec) then
             local handler = spec[packet.method] or spec["_unknown"]
             if(handler) then
-               handler(pos, packet)
+               local success, err = pcall(function() handler(pos, packet) end)
+               if(not success) then reply_err(packet, spec, err) end
             else
                reply_err(packet, spec, "No method " .. packet.method)
             end
