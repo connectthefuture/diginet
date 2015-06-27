@@ -18,14 +18,14 @@ local formspec = function(entries)
 end
 
 local on_construct = function(pos)
-   local meta = minetest.env:get_meta(pos)
+   local meta = minetest.get_meta(pos)
    meta:set_string("formspec", formspec())
 end
 
 local on_receive_fields = function(pos, _formname, fields, player)
    print("received")
    print(minetest.serialize(fields))
-   local meta = minetest.env:get_meta(pos)
+   local meta = minetest.get_meta(pos)
    meta:set_string("formspec", formspec())
 
    -- TODO: support arbitrary entries
