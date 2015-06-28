@@ -27,7 +27,10 @@ local on_receive_fields = function(pos, _formname, fields, player)
 
    for k,v in pairs({alias1 = "pos1", alias2 = "pos2", alias3 = "pos3",
                      alias4 = "pos4"}) do
-      if(fields[v] and not fields[v]:match("^$")) then
+      if(fields[v] == "") then
+         print("DNS: clearing " .. fields[k])
+         diginet.hostnames[fields[k]] = nil
+      elseif(fields[v])
          print("DNS: setting " .. fields[k] .. " to " .. fields[v])
          diginet.hostnames[fields[k]] = fields[v]
       end
