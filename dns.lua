@@ -30,7 +30,7 @@ local on_receive_fields = function(pos, _formname, fields, player)
       if(fields[v] == "") then
          print("DNS: clearing " .. fields[k])
          diginet.hostnames[fields[k]] = nil
-      elseif(fields[v])
+      elseif(fields[v]) then
          print("DNS: setting " .. fields[k] .. " to " .. fields[v])
          diginet.hostnames[fields[k]] = fields[v]
       end
