@@ -21,6 +21,11 @@ to function as broadcast or multicast.
 * `(*,*,*)` - addresses all nodes in a network
 * `(*,0-255,*)` - addresses all nodes from Y=0 to Y=255
 
+You can register aliases that are easier to remember than position
+strings. From Lua you can use `diginet.register`, and in-game there is
+a DNS Server node which exposes this using a form. You can programmatically
+query the aliases table using `diginet.lookup`.
+
 ## Packets
 
 Each packet is a lua table with three required fields:

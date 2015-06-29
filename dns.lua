@@ -1,6 +1,6 @@
 -- DNS server
 
-diginet.hostnames = {}
+diginet.aliases = {}
 
 local formspec = function(entries)
    return "size[8,6.5]" ..
@@ -29,34 +29,34 @@ local on_receive_fields = function(pos, _formname, fields, player)
                      alias4 = "pos4"}) do
       if(fields[v] == "") then
          print("DNS: clearing " .. fields[k])
-         diginet.hostnames[fields[k]] = nil
+         diginet.aliases[fields[k]] = nil
       elseif(fields[v]) then
          print("DNS: setting " .. fields[k] .. " to " .. fields[v])
-         diginet.hostnames[fields[k]] = fields[v]
+         diginet.aliases[fields[k]] = fields[v]
       end
    end
 end
 
 local set_hostname = function(pos, packet)
-   diginet.hostnames[packet.alias] = packet.position
+   diginet.aliases[packet.alias] = packet.position
 end
 
-local hostnames_path = minetest.get_worldpath() .. "/diginet_hostnames"
+local aliases_path = minetest.get_worldpath() .. "/diginet_aliases"
 
-local save_hostnames = function()
-   local file = io.open(hostnames_path, "w")
-   file:write(minetest.serialize(diginet.hostnames))
+local save_aliases = function()
+   local file = io.open(aliases_path, "w")
+   file:write(minetest.serialize(diginet.aliases))
    file:close()
 end
 
-local load_hostnames = function()
-   print("Loading diginet hostnames...")
-   local file = io.open(hostnames_path, "r")
+local load_aliases = function()
+   print("Loading diginet aliases...")
+   local file = io.open(aliases_path, "r")
    local contents = file and file:read("*all")
    if file then file:close() end
    if(file and contents ~= "") then
       for k,v in pairs(minetest.deserialize(contents)) do
-         diginet.hostnames[k] = v
+         diginet.aliases[k] = v
       end
    else
       return {}
@@ -82,5 +82,5 @@ minetest.register_node("diginet:dns", {
                           on_receive_fields = on_receive_fields,
 })
 
-minetest.register_on_shutdown(save_hostnames)
-load_hostnames()
+minetest.register_on_shutdown(save_aliases)
+load_aliases()

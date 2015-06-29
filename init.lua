@@ -4,7 +4,7 @@ local normalize_address = function(address)
    if(type(address) == "table") then
       return address
    elseif(type(address) == "string") then
-      return minetest.string_to_pos(diginet.hostnames[address] or address)
+      return minetest.string_to_pos(diginet.aliases[address] or address)
    else
       error("Unknown address type: " .. type(address))
    end
@@ -89,7 +89,19 @@ diginet = {
          end
          diginet.send(p2)
       end
-   end
+   end,
+
+   -- Look up a name in the aliases table and return either the alias or the
+   -- original value.
+   lookup = function(host)
+      return diginet.aliases[host] or host
+   end,
+
+   -- Register an alias to point to a position.
+   register = function(alias, pos)
+      if(type(pos) == "string") then pos = minetest.string_to_pos end
+      diginet.aliases[alias] = pos
+   end,
 }
 
 dofile(minetest.get_modpath("diginet").."/dns.lua")
